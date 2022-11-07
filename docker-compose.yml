@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: ./web
+    volumes:
+      - ./www/myapp:/app
+      - bundle-volume:/usr/local/bundle
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    command: sh /scripts/entrypoint.sh
+
+  db:
+    build:
+      context: ./db
+      dockerfile: './Dockerfile.posgres'
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: 'passowrd123'
+
+volumes:
+  bundle-volume:
+  db-volume:
